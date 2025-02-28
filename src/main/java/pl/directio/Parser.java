@@ -66,7 +66,7 @@ class Parser {
 				}
 
 				if (Character.isWhitespace(current)) {
-					continue;
+					// do nothing
 				} else {
 					final Operator newOperator = switch (current) {
 						case '+' -> Operator.ADD;
