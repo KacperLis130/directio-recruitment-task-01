@@ -65,9 +65,7 @@ class Parser {
 					buffer.setLength(0);
 				}
 
-				if (Character.isWhitespace(current)) {
-					// do nothing
-				} else {
+				if (!Character.isWhitespace(current)) {
 					final Operator newOperator = switch (current) {
 						case '+' -> Operator.ADD;
 						case '-' -> Operator.SUBTRACT;
