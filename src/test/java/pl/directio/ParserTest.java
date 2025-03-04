@@ -1,6 +1,5 @@
 package pl.directio;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -8,6 +7,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ParserTest {
 
@@ -22,22 +25,22 @@ class ParserTest {
 			"     "
 	})
 	void throws_on_empty_or_blank(String expression) {
-		final IllegalArgumentException illegalArgumentException = Assertions.assertThrows(
+		final IllegalArgumentException illegalArgumentException = assertThrows(
 				IllegalArgumentException.class,
 				() -> parser.parse(expression)
 		);
 
-		Assertions.assertEquals("Empty or blank expression: \"" + expression + "\"", illegalArgumentException.getMessage());
+		assertEquals("Empty or blank expression: \"" + expression + "\"", illegalArgumentException.getMessage());
 	}
 
 	@Test
 	void throws_on_null() {
-		final NullPointerException nullPointerException = Assertions.assertThrows(
+		final NullPointerException nullPointerException = assertThrows(
 				NullPointerException.class,
 				() -> parser.parse(null)
 		);
 
-		Assertions.assertEquals("expression is marked non-null but is null", nullPointerException.getMessage());
+		assertEquals("expression is marked non-null but is null", nullPointerException.getMessage());
 	}
 
 	@ParameterizedTest
@@ -52,27 +55,27 @@ class ParserTest {
 			"-2 -"
 	})
 	void throw_on_missing_operands_expression(String expression) {
-		Throwable t = Assertions.assertThrows(
+		Throwable t = assertThrows(
 				Parser.InvalidExpressionException.class,
 				() -> parser.parse(expression)
 		);
 
-		Assertions.assertTrue(t.getMessage().startsWith("Missing operands for operation:"));
+		assertTrue(t.getMessage().startsWith("Missing operands for operation:"));
 	}
 
 	@Test
 	void throws_on_division_by_0() {
-		final ArithmeticException arithmeticException = Assertions.assertThrows(
+		final ArithmeticException arithmeticException = assertThrows(
 				ArithmeticException.class,
 				() -> parser.parse("1 / 0")
 		);
 
-		Assertions.assertEquals("Division by 0", arithmeticException.getMessage());
+		assertEquals("Division by 0", arithmeticException.getMessage());
 	}
 
 	@Test
 	void evaluates_left_to_right() {
-		Assertions.assertEquals(
+		assertEquals(
 				0,
 				parser.parse("1 / 1 * 0")
 		);
@@ -80,12 +83,12 @@ class ParserTest {
 
 	@Test
 	void throws_on_unknown_symbol() {
-		final Parser.InvalidExpressionException invalidExpressionException = Assertions.assertThrows(
+		final Parser.InvalidExpressionException invalidExpressionException = assertThrows(
 				Parser.InvalidExpressionException.class,
 				() -> parser.parse("1 ^ 1")
 		);
 
-		Assertions.assertEquals("Unknown operator \"^\"", invalidExpressionException.getMessage());
+		assertEquals("Unknown operator \"^\"", invalidExpressionException.getMessage());
 	}
 
 	@ParameterizedTest
@@ -94,7 +97,7 @@ class ParserTest {
 			String expression,
 			int expectedResult
 	) {
-		Assertions.assertEquals(
+		assertEquals(
 				expectedResult,
 				parser.parse(expression)
 		);
