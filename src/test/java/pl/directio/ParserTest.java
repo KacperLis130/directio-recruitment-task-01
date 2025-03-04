@@ -22,20 +22,22 @@ class ParserTest {
 			"     "
 	})
 	void throws_on_empty_or_blank(String expression) {
-		Assertions.assertThrows(
+		final IllegalArgumentException illegalArgumentException = Assertions.assertThrows(
 				IllegalArgumentException.class,
-				() -> parser.parse(expression),
-				"Empty or blank expression: \"" + expression + "\""
+				() -> parser.parse(expression)
 		);
+
+		Assertions.assertEquals("Empty or blank expression: \"" + expression + "\"", illegalArgumentException.getMessage());
 	}
 
 	@Test
 	void throws_on_null() {
-		Assertions.assertThrows(
+		final NullPointerException nullPointerException = Assertions.assertThrows(
 				NullPointerException.class,
-				() -> parser.parse(null),
-				"expression is marked non-null but is null"
+				() -> parser.parse(null)
 		);
+
+		Assertions.assertEquals("expression is marked non-null but is null", nullPointerException.getMessage());
 	}
 
 	@ParameterizedTest
@@ -60,11 +62,12 @@ class ParserTest {
 
 	@Test
 	void throws_on_division_by_0() {
-		Assertions.assertThrows(
+		final ArithmeticException arithmeticException = Assertions.assertThrows(
 				ArithmeticException.class,
-				() -> parser.parse("1 / 0"),
-				"Division by 0"
+				() -> parser.parse("1 / 0")
 		);
+
+		Assertions.assertEquals("Division by 0", arithmeticException.getMessage());
 	}
 
 	@Test
@@ -77,11 +80,12 @@ class ParserTest {
 
 	@Test
 	void throws_on_unknown_symbol() {
-		Assertions.assertThrows(
+		final Parser.InvalidExpressionException invalidExpressionException = Assertions.assertThrows(
 				Parser.InvalidExpressionException.class,
-				() -> parser.parse("1 ^ 1"),
-				"Unknown operator \"^\""
+				() -> parser.parse("1 ^ 1")
 		);
+
+		Assertions.assertEquals("Unknown operator \"^\"", invalidExpressionException.getMessage());
 	}
 
 	@ParameterizedTest
