@@ -100,7 +100,7 @@ class ParserTest {
 		);
 	}
 
-	public static Stream<Arguments> getHappyPathTestCases() {
+	static Stream<Arguments> getHappyPathTestCases() {
 		return Stream.of(
 				Arguments.of("1", 1),
 				Arguments.of("-1", -1),
